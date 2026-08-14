@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Database Design</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Mermaid -->
+    <script type="module">
+
+        import mermaid from
+        "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+
+        mermaid.initialize({
+
+            startOnLoad: false,
+
+            theme: "default",
+
+            securityLevel: "loose",
+
+            er: {
+
+                useMaxWidth: true
+
+            }
+
+        });
+
+
+        /*
+         * Convert structured database data
+         * into Mermaid ER diagram.
+         */
+
+        function createDatabaseDiagram(
+            database
+        ) {
+
+            if (!database) {
+
+                return "";
+
+            }
+
+
+            const entities =
+                database.entities || [];
+
+            const relationships =
+                database.relationships || [];
+
+
+            if (!entities.length) {
+
+                return "";
+
+            }
+
+
+            let diagram =
+                "erDiagram\n";
+
+
+            /*
+             * Create entities and columns.
+             */
+
+            entities.forEach(
+                (entity) => {
+
+                    const entityName =
+                        entity.name
+                            .replace(
+                                /[^a-zA-Z0-9_]/g,
+                                "_"
+                            )
+                            .toUpperCase();
+
+
+                    diagram +=
+                        `    ${entityName} {\n`;
+
+
+                    const columns =
+                        entity.columns || [];
+
+
+                    columns.forEach(
+                        (column) => {
+
+                            const type =
+                                column.type ||
+                                "VARCHAR";
+
+
+                            const name =
+                                column.name ||
+                                "field";
+
+
+                            const key =
+                                column.key ||
+                                "";
+
+
+                            /*
+                             * Mermaid ER syntax:
+                             *
+                             * TYPE name PK
+                             * TYPE name FK
+                             * TYPE name UK
+                             */
+
+                            diagram +=
+                                `        ${type} ${name} ${key}\n`;
+
+                        }
+                    );
+
+
+                    diagram +=
+                        "    }\n";
+
+                }
+            );
+
+
+            /*
+             * Create relationships.
+             */
+
+            relationships.forEach(
+                (relationship) => {
+
+                    if (
+                        !relationship.from ||
+                        !relationship.to
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const from =
+                        relationship.from
+                            .replace(
+                                /[^a-zA-Z0-9_]/g,
+                                "_"
+                            )
+                            .toUpperCase();
+
+
+                    const to =
+                        relationship.to
+                            .replace(
+                                /[^a-zA-Z0-9_]/g,
+                                "_"
+                            )
+                            .toUpperCase();
+
+
+                    const type =
+                        relationship.type ||
+                        "ONE_TO_MANY";
+
+
+                    const label =
+                        relationship.label ||
+                        "";
+
+
+                    let connector =
+                        "||--o{";
+
+
+                    if (
+                        type ===
+                        "ONE_TO_ONE"
+                    ) {
+
+                        connector =
+                            "||--||";
+
+                    }
+
+
+                    else if (
+                        type ===
+                        "MANY_TO_MANY"
+                    ) {
+
+                        connector =
+                            "}o--o{";
+
+                    }
+
+
+                    else if (
+                        type ===
+                        "ONE_TO_MANY"
+                    ) {
+
+                        connector =
+                            "||--o{";
+
+                    }
+
+
+                    diagram +=
+                        `    ${from} ${connector} ${to} : "${label}"\n`;
+
+                }
+            );
+
+
+            return diagram;
+
+        }
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            async function () {
+
+                const diagram =
+                    document.getElementById(
+                        "database-diagram"
+                    );
+
+
+                /*
+                 * Get complete system design.
+                 */
+
+                const storedDesign =
+                    sessionStorage.getItem(
+                        "systemDesign"
+                    );
+
+
+                if (!storedDesign) {
+
+                    diagram.innerHTML =
+                        "<p>No database design available. Please generate a system design first.</p>";
+
+                    return;
+
+                }
+
+
+                let design;
+
+
+                try {
+
+                    design =
+                        JSON.parse(
+                            storedDesign
+                        );
+
+                } catch (error) {
+
+                    console.error(
+                        "Invalid system design:",
+                        error
+                    );
+
+                    diagram.innerHTML =
+                        "<p>Unable to load database data.</p>";
+
+                    return;
+
+                }
+
+
+                const database =
+                    design.database;
+
+
+                /*
+                 * Generate Mermaid ER diagram.
+                 */
+
+                const mermaidCode =
+                    createDatabaseDiagram(
+                        database
+                    );
+
+
+                if (!mermaidCode) {
+
+                    diagram.innerHTML =
+                        "<p>No database diagram available.</p>";
+
+                    return;
+
+                }
+
+
+                diagram.textContent =
+                    mermaidCode;
+
+
+                /*
+                 * Render Mermaid.
+                 */
+
+                try {
+
+                    await mermaid.run({
+
+                        nodes: [diagram]
+
+                    });
+
+                } catch (error) {
+
+                    console.error(
+                        "Mermaid error:",
+                        error
+                    );
+
+                    diagram.innerHTML =
+                        "<p>Unable to render database diagram.</p>";
+
+                }
+
+
+                /*
+                 * Display database entities.
+                 */
+
+                const databaseContainer =
+                    document.getElementById(
+                        "database-entities"
+                    );
+
+
+                const entities =
+                    database &&
+                    database.entities
+                        ? database.entities
+                        : [];
+
+
+                if (entities.length) {
+
+                    databaseContainer.innerHTML = "";
+
+
+                    entities.forEach(
+                        (entity) => {
+
+                            const card =
+                                document.createElement(
+                                    "div"
+                                );
+
+                            card.className =
+                                "database-item";
+
+
+                            const title =
+                                document.createElement(
+                                    "strong"
+                                );
+
+
+                            title.textContent =
+                                "🗄️ " +
+                                entity.name;
+
+
+                            card.appendChild(
+                                title
+                            );
+
+
+                            const columns =
+                                entity.columns || [];
+
+
+                            if (columns.length) {
+
+                                const list =
+                                    document.createElement(
+                                        "ul"
+                                    );
+
+
+                                columns.forEach(
+                                    (column) => {
+
+                                        const item =
+                                            document.createElement(
+                                                "li"
+                                            );
+
+
+                                        let text =
+                                            `${column.name} : ${column.type || "VARCHAR"}`;
+
+
+                                        if (
+                                            column.key
+                                        ) {
+
+                                            text +=
+                                                ` (${column.key})`;
+
+                                        }
+
+
+                                        item.textContent =
+                                            text;
+
+
+                                        list.appendChild(
+                                            item
+                                        );
+
+                                    }
+                                );
+
+
+                                card.appendChild(
+                                    list
+                                );
+
+                            }
+
+
+                            databaseContainer.appendChild(
+                                card
+                            );
+
+                        }
+                    );
+
+                } else {
+
+                    databaseContainer.innerHTML =
+                        "<p>No database entities available.</p>";
+
+                }
+
+            }
+        );
+
+    </script>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="logo">
+        AI System Design Assistant
+    </div>
+
+</header>
+
+
+<main class="detail-page">
+
+
+    <div class="detail-header">
+
+        <a href="/dashboard"
+           class="back-button">
+
+            ← Back to Dashboard
+
+        </a>
+
+
+        <p class="tagline">
+            DATABASE DESIGN
+        </p>
+
+
+        <h1>
+            Database Design
+        </h1>
+
+
+        <p>
+            Entity relationship diagram generated
+            specifically for your software requirement.
+        </p>
+
+    </div>
+
+
+    <!-- =================================================
+         ER DIAGRAM
+         ================================================= -->
+
+    <div class="diagram-card">
+
+        <h2>
+            🗄️ Entity Relationship Diagram
+        </h2>
+
+
+        <div
+            id="database-diagram"
+            class="mermaid">
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         DATABASE ENTITIES
+         ================================================= -->
+
+    <div class="detail-card">
+
+        <h2>
+            🔎 Database Entities
+        </h2>
+
+
+        <div
+            id="database-entities"
+            class="database-grid">
+
+            <p>
+                Loading database entities...
+            </p>
+
+        </div>
+
+    </div>
+
+
+</main>
+
+
+<footer>
+
+    <p>
+        AI-Powered System Design Assistant
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

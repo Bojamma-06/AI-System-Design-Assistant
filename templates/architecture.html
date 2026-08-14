@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>System Architecture</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Mermaid -->
+    <script type="module">
+
+        import mermaid from
+        "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+
+        mermaid.initialize({
+
+            startOnLoad: false,
+
+            theme: "default",
+
+            securityLevel: "loose",
+
+            flowchart: {
+
+                useMaxWidth: true,
+
+                htmlLabels: true
+
+            }
+
+        });
+
+
+        /*
+         * Convert structured architecture data
+         * into a Mermaid flowchart.
+         */
+
+        function createArchitectureDiagram(
+            architecture
+        ) {
+
+            if (!architecture) {
+
+                return "";
+
+            }
+
+
+            const components =
+                architecture.components || [];
+
+            const relationships =
+                architecture.relationships || [];
+
+
+            if (!components.length) {
+
+                return "";
+
+            }
+
+
+            let diagram =
+                "flowchart TD\n";
+
+
+            /*
+             * Create component nodes.
+             */
+
+            components.forEach(
+                (component, index) => {
+
+                    const id =
+                        component.id ||
+                        `component${index}`;
+
+                    const name =
+                        component.name ||
+                        "Component";
+
+                    diagram +=
+                        `    ${id}["${name}"]\n`;
+
+                }
+            );
+
+
+            /*
+             * Create relationships.
+             */
+
+            relationships.forEach(
+                (relationship) => {
+
+                    const from =
+                        relationship.from;
+
+                    const to =
+                        relationship.to;
+
+                    const label =
+                        relationship.label ||
+                        "";
+
+
+                    if (!from || !to) {
+
+                        return;
+
+                    }
+
+
+                    if (label) {
+
+                        diagram +=
+                            `    ${from} -->|"${label}"| ${to}\n`;
+
+                    } else {
+
+                        diagram +=
+                            `    ${from} --> ${to}\n`;
+
+                    }
+
+                }
+            );
+
+
+            return diagram;
+
+        }
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            async function () {
+
+                const diagram =
+                    document.getElementById(
+                        "architecture-diagram"
+                    );
+
+
+                /*
+                 * Get complete system design.
+                 */
+
+                const storedDesign =
+                    sessionStorage.getItem(
+                        "systemDesign"
+                    );
+
+
+                if (!storedDesign) {
+
+                    diagram.innerHTML =
+                        "<p>No architecture available. Please generate a system design first.</p>";
+
+                    return;
+
+                }
+
+
+                let design;
+
+
+                try {
+
+                    design =
+                        JSON.parse(
+                            storedDesign
+                        );
+
+                } catch (error) {
+
+                    console.error(
+                        "Invalid system design:",
+                        error
+                    );
+
+                    diagram.innerHTML =
+                        "<p>Unable to load architecture data.</p>";
+
+                    return;
+
+                }
+
+
+                const architecture =
+                    design.architecture;
+
+
+                /*
+                 * Generate Mermaid diagram.
+                 */
+
+                const mermaidCode =
+                    createArchitectureDiagram(
+                        architecture
+                    );
+
+
+                if (!mermaidCode) {
+
+                    diagram.innerHTML =
+                        "<p>No architecture diagram available.</p>";
+
+                    return;
+
+                }
+
+
+                diagram.textContent =
+                    mermaidCode;
+
+
+                /*
+                 * Render Mermaid.
+                 */
+
+                try {
+
+                    await mermaid.run({
+
+                        nodes: [diagram]
+
+                    });
+
+                } catch (error) {
+
+                    console.error(
+                        "Mermaid error:",
+                        error
+                    );
+
+                    diagram.innerHTML =
+                        "<p>Unable to render architecture diagram.</p>";
+
+                }
+
+
+                /*
+                 * Display architecture components.
+                 */
+
+                const componentsContainer =
+                    document.getElementById(
+                        "architecture-components"
+                    );
+
+
+                if (
+                    architecture &&
+                    architecture.components &&
+                    architecture.components.length
+                ) {
+
+                    componentsContainer.innerHTML = "";
+
+
+                    architecture.components.forEach(
+                        (component) => {
+
+                            const card =
+                                document.createElement(
+                                    "div"
+                                );
+
+                            card.className =
+                                "architecture-item";
+
+
+                            card.innerHTML = `
+
+                                <strong>
+                                    ⚙️ ${component.name || "Component"}
+                                </strong>
+
+                                <p>
+                                    ${component.description || ""}
+                                </p>
+
+                            `;
+
+
+                            componentsContainer.appendChild(
+                                card
+                            );
+
+                        }
+                    );
+
+                } else {
+
+                    componentsContainer.innerHTML =
+                        "<p>No architecture components available.</p>";
+
+                }
+
+
+                /*
+                 * Display technologies.
+                 */
+
+                const technologyContainer =
+                    document.getElementById(
+                        "architecture-technologies"
+                    );
+
+
+                const technologies =
+                    architecture &&
+                    architecture.technologies
+                        ? architecture.technologies
+                        : [];
+
+
+                if (technologies.length) {
+
+                    technologyContainer.innerHTML = "";
+
+
+                    technologies.forEach(
+                        (technology) => {
+
+                            const card =
+                                document.createElement(
+                                    "div"
+                                );
+
+                            card.className =
+                                "architecture-item";
+
+
+                            card.innerHTML = `
+
+                                <strong>
+                                    ${technology.category || "Technology"}
+                                </strong>
+
+                                <p>
+                                    ${technology.technology || ""}
+                                </p>
+
+                            `;
+
+
+                            technologyContainer.appendChild(
+                                card
+                            );
+
+                        }
+                    );
+
+                } else {
+
+                    technologyContainer.innerHTML =
+                        "<p>No technology recommendations available.</p>";
+
+                }
+
+            }
+        );
+
+    </script>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="logo">
+        AI System Design Assistant
+    </div>
+
+</header>
+
+
+<main class="detail-page">
+
+
+    <div class="detail-header">
+
+        <a href="/dashboard"
+           class="back-button">
+
+            ← Back to Dashboard
+
+        </a>
+
+
+        <p class="tagline">
+            SYSTEM ARCHITECTURE
+        </p>
+
+
+        <h1>
+            System Architecture
+        </h1>
+
+
+        <p>
+            Visual representation of the architecture
+            generated specifically for your software requirement.
+        </p>
+
+    </div>
+
+
+    <!-- =================================================
+         ARCHITECTURE DIAGRAM
+         ================================================= -->
+
+    <div class="diagram-card">
+
+        <h2>
+            🏗️ Architecture Diagram
+        </h2>
+
+
+        <div
+            id="architecture-diagram"
+            class="mermaid">
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         ARCHITECTURE COMPONENTS
+         ================================================= -->
+
+    <div class="detail-card">
+
+        <h2>
+            🔎 Architecture Components
+        </h2>
+
+
+        <div
+            id="architecture-components"
+            class="architecture-list">
+
+            <p>
+                Loading architecture components...
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         RECOMMENDED TECHNOLOGIES
+         ================================================= -->
+
+    <div class="detail-card">
+
+        <h2>
+            💻 Recommended Technologies
+        </h2>
+
+
+        <div
+            id="architecture-technologies"
+            class="architecture-list">
+
+            <p>
+                Loading technology recommendations...
+            </p>
+
+        </div>
+
+    </div>
+
+
+</main>
+
+
+<footer>
+
+    <p>
+        AI-Powered System Design Assistant
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

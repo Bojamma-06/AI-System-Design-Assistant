@@ -1,0 +1,1727 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f8fc;
+    color: #1f2937;
+    min-height: 100vh;
+}
+
+
+/* Navigation */
+
+.navbar {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 8%;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+/* Main section */
+
+.hero {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+}
+
+.tagline {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 48px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+}
+
+.description {
+    max-width: 700px;
+    margin: 0 auto 40px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #6b7280;
+}
+
+
+/* Input card */
+
+.input-card {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    text-align: left;
+}
+
+.input-card label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    resize: vertical;
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #6366f1;
+}
+
+button {
+    margin-top: 18px;
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #111827;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #374151;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* AI Result Section */
+
+.results {
+    margin-top: 40px;
+    text-align: left;
+}
+
+.results > h2 {
+    margin-bottom: 25px;
+    font-size: 28px;
+    text-align: center;
+}
+
+
+/* Individual AI result cards */
+
+.result-card {
+    display: block;
+    margin-top: 25px;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    text-align: left;
+}
+
+.result-card h3 {
+    margin-bottom: 18px;
+    font-size: 20px;
+}
+
+
+/* AI-generated text */
+
+.result-card pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.7;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    color: #374151;
+}
+
+
+/* Footer */
+
+footer {
+    height: 50px;
+    text-align: center;
+    color: #9ca3af;
+    font-size: 13px;
+    padding-top: 15px;
+}
+/* =========================
+   DASHBOARD
+   ========================= */
+
+.dashboard {
+    max-width: 1100px;
+    margin: auto;
+    padding: 70px 25px;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.dashboard-header h1 {
+    margin-bottom: 15px;
+}
+
+.dashboard-header p:last-child {
+    color: #6b7280;
+    font-size: 17px;
+}
+
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+
+.dashboard-card {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.10);
+}
+
+
+.card-icon {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+
+.dashboard-card h2 {
+    font-size: 21px;
+    margin-bottom: 12px;
+}
+
+
+.dashboard-card p {
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+
+.dashboard-card span {
+    font-weight: 600;
+}
+
+
+/* =========================
+   DETAIL PAGE
+   ========================= */
+
+.detail-page {
+    max-width: 950px;
+    margin: auto;
+    padding: 60px 25px;
+}
+
+
+.detail-header {
+    margin-bottom: 35px;
+}
+
+
+.back-button {
+    display: inline-block;
+    margin-bottom: 30px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+
+.detail-header h1 {
+    margin-bottom: 15px;
+}
+
+
+.detail-header p:last-child {
+    color: #6b7280;
+}
+
+
+.detail-card {
+    background: white;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+
+.detail-card h2 {
+    margin-bottom: 25px;
+}
+
+
+.detail-card pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.7;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    color: #374151;
+}
+
+
+/* Dashboard button */
+
+.dashboard-footer {
+    text-align: center;
+    margin-top: 40px;
+}
+
+
+.dashboard-footer button {
+    width: auto;
+    padding: 12px 25px;
+}
+
+
+@media (max-width: 700px) {
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+
+}
+/* =====================================================
+   ARCHITECTURE DIAGRAM
+   ===================================================== */
+
+.diagram-card {
+    width: 100%;
+    margin-top: 30px;
+    padding: 30px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    text-align: left;
+    overflow-x: auto;
+}
+
+.diagram-card h2 {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.mermaid {
+    width: 100%;
+    min-width: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* =====================================================
+   ARCHITECTURE COMPONENT LIST
+   ===================================================== */
+
+.architecture-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.architecture-item {
+    padding: 20px;
+    background: #f7f8fc;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.architecture-item strong {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.architecture-item p {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   BACK BUTTON
+   ===================================================== */
+
+.back-button {
+    display: inline-block;
+    margin-bottom: 25px;
+    text-decoration: none;
+    color: #374151;
+    font-weight: 600;
+}
+
+.back-button:hover {
+    color: #111827;
+}
+
+
+/* =====================================================
+   DETAIL PAGE
+   ===================================================== */
+
+.detail-page {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 50px 20px;
+}
+
+.detail-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.detail-header h1 {
+    margin-bottom: 15px;
+}
+
+.detail-header p {
+    color: #6b7280;
+}
+
+
+/* =====================================================
+   RESPONSIVE DESIGN
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+    .architecture-list {
+        grid-template-columns: 1fr;
+    }
+
+    .diagram-card {
+        padding: 15px;
+    }
+
+}
+/* =====================================================
+   DATABASE ER DIAGRAM
+   ===================================================== */
+
+.database-info {
+    margin-top: 30px;
+}
+
+.database-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.database-item {
+    padding: 20px;
+
+    background: #f7f8fc;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+}
+
+.database-item strong {
+    display: block;
+
+    font-size: 16px;
+
+    margin-bottom: 8px;
+}
+
+.database-item p {
+    margin: 0;
+
+    color: #6b7280;
+
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   RESPONSIVE DATABASE DESIGN
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+    .database-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* =========================================================
+   REQUIREMENT ANALYSIS
+   ========================================================= */
+
+.requirement-section {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto 30px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================================================
+   SECTION HEADING
+   ========================================================= */
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+
+.section-heading h2 {
+    margin: 0 0 5px;
+    font-size: 22px;
+    color: #111827;
+}
+
+
+.section-heading p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* Section icon */
+
+.section-icon {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 14px;
+
+    background: #f3f4f6;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   REQUIREMENT GRID
+   ========================================================= */
+
+.requirement-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+
+/* =========================================================
+   REQUIREMENT CARD
+   ========================================================= */
+
+.requirement-card {
+    position: relative;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 14px;
+
+    padding: 22px;
+
+    background: #fafafa;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 15px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.requirement-card:hover {
+    transform: translateY(-3px);
+
+    border-color: #d1d5db;
+
+    box-shadow:
+        0 10px 25px
+        rgba(0, 0, 0, 0.07);
+}
+
+
+/* =========================================================
+   REQUIREMENT NUMBER
+   ========================================================= */
+
+.requirement-number {
+    position: absolute;
+
+    top: 14px;
+    right: 16px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    color: #9ca3af;
+}
+
+
+/* =========================================================
+   CARD ICON
+   ========================================================= */
+
+.requirement-card-icon {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 11px;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 19px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.requirement-card-content {
+    padding-right: 25px;
+}
+
+
+.requirement-card-content h3 {
+    margin: 0 0 7px;
+
+    font-size: 16px;
+
+    font-weight: 650;
+
+    color: #111827;
+}
+
+
+.requirement-card-content p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   EMPTY CARD
+   ========================================================= */
+
+.empty-card {
+    grid-column: 1 / -1;
+
+    padding: 30px;
+
+    text-align: center;
+
+    color: #6b7280;
+
+    background: #f9fafb;
+
+    border: 1px dashed #d1d5db;
+
+    border-radius: 14px;
+}
+
+
+/* =========================================================
+   FULL AI ANALYSIS
+   ========================================================= */
+
+.full-analysis-section {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 10px auto 35px;
+}
+
+
+/* Toggle button */
+
+.analysis-toggle {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 17px 20px;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    color: #374151;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.analysis-toggle:hover {
+    background: #f9fafb;
+
+    border-color: #d1d5db;
+}
+
+
+/* Full analysis content */
+
+.full-analysis-content {
+    display: none;
+
+    margin-top: 10px;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+}
+
+
+.full-analysis-content.show {
+    display: block;
+}
+
+
+.full-analysis-content pre {
+    margin: 0;
+
+    padding: 25px;
+
+    white-space: pre-wrap;
+
+    word-wrap: break-word;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    color: #4b5563;
+}
+
+
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .requirement-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .requirement-section {
+        padding: 24px;
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .requirement-section {
+        padding: 20px;
+
+        border-radius: 16px;
+    }
+
+
+    .section-heading {
+        align-items: flex-start;
+    }
+
+
+    .section-heading h2 {
+        font-size: 19px;
+    }
+
+
+    .section-heading p {
+        font-size: 13px;
+    }
+
+
+    .requirement-card {
+        padding: 18px;
+    }
+
+
+    .requirement-card-content h3 {
+        font-size: 15px;
+    }
+
+
+    .requirement-card-content p {
+        font-size: 13px;
+    }
+
+}
+/* =========================================================
+   AI DESIGN CRITIQUE DASHBOARD
+   ========================================================= */
+
+.critique-dashboard {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   SCORE CARD
+   ========================================================= */
+
+.critique-score-card {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+
+    padding: 30px;
+    margin-bottom: 25px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+
+.score-icon {
+    width: 70px;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background: #fff7ed;
+
+    font-size: 32px;
+
+    flex-shrink: 0;
+}
+
+
+.score-label {
+    margin: 0 0 4px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: #6b7280;
+}
+
+
+.score-value {
+    display: flex;
+    align-items: baseline;
+
+    margin: 2px 0 5px;
+}
+
+
+#score-number {
+    font-size: 46px;
+    font-weight: 800;
+    color: #111827;
+}
+
+
+.score-out-of {
+    margin-left: 5px;
+
+    font-size: 20px;
+    font-weight: 600;
+
+    color: #9ca3af;
+}
+
+
+.score-content p:last-child {
+    margin: 0;
+
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   GENERAL SECTION
+   ========================================================= */
+
+.critique-section {
+    background: white;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+
+    padding: 28px;
+    margin-bottom: 25px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+}
+
+
+.critique-section-header {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 22px;
+}
+
+
+.critique-section-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #f3f4f6;
+
+    font-size: 22px;
+
+    flex-shrink: 0;
+}
+
+
+.critique-section-header h2 {
+    margin: 0 0 4px;
+
+    font-size: 21px;
+}
+
+
+.critique-section-header p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   SEVERITY
+   ========================================================= */
+
+.severity-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 16px;
+}
+
+
+.severity-card {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 20px;
+
+    border-radius: 14px;
+
+    border: 1px solid #e5e7eb;
+}
+
+
+.severity-icon {
+    font-size: 25px;
+}
+
+
+.severity-label {
+    display: block;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 3px;
+}
+
+
+.severity-card strong {
+    display: block;
+
+    font-size: 27px;
+
+    color: #111827;
+}
+
+
+.severity-card p {
+    margin: 2px 0 0;
+
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+
+.severity-high {
+    background: #fff5f5;
+}
+
+
+.severity-medium {
+    background: #fffaf0;
+}
+
+
+.severity-low {
+    background: #f0fdf4;
+}
+
+
+/* =========================================================
+   ISSUE CARDS
+   ========================================================= */
+
+.issue-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+}
+
+
+.issue-card {
+    position: relative;
+
+    padding: 20px;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 14px;
+
+    background: #fafafa;
+
+    transition: 0.2s ease;
+}
+
+
+.issue-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(0, 0, 0, 0.07);
+}
+
+
+.issue-card-top {
+    margin-bottom: 12px;
+}
+
+
+.issue-severity {
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: .7px;
+}
+
+
+.issue-severity.high {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+
+.issue-severity.medium {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+
+.issue-severity.low {
+    background: #dcfce7;
+    color: #166534;
+}
+
+
+.issue-card p {
+    margin: 0;
+
+    color: #4b5563;
+
+    font-size: 14px;
+
+    line-height: 1.65;
+}
+
+
+.empty-issue {
+    padding: 18px;
+
+    border-radius: 12px;
+
+    background: #f9fafb;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   RECOMMENDATIONS
+   ========================================================= */
+
+.recommendations-list {
+    display: grid;
+
+    gap: 16px;
+}
+
+
+.recommendation-card {
+    padding: 22px;
+
+    border-radius: 14px;
+
+    border: 1px solid #e5e7eb;
+
+    background: #fafafa;
+}
+
+
+.recommendation-label {
+    display: inline-block;
+
+    margin-bottom: 7px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    color: #6366f1;
+}
+
+
+.recommendation-card h3 {
+    margin: 0 0 18px;
+
+    font-size: 16px;
+
+    line-height: 1.5;
+
+    color: #111827;
+}
+
+
+.recommendation-card p {
+    margin: 0;
+
+    color: #4b5563;
+
+    font-size: 14px;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   RAW AI CRITIQUE
+   ========================================================= */
+
+.raw-critique {
+    margin-top: 30px;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+}
+
+
+.raw-critique summary {
+    padding: 18px 20px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    color: #374151;
+}
+
+
+.raw-critique summary:hover {
+    background: #f9fafb;
+}
+
+
+.raw-critique pre {
+    padding: 20px;
+
+    margin: 0;
+
+    border-top: 1px solid #e5e7eb;
+
+    white-space: pre-wrap;
+
+    line-height: 1.6;
+
+    color: #4b5563;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .severity-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .issue-list {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .critique-score-card {
+        padding: 22px;
+    }
+
+    .critique-section {
+        padding: 20px;
+    }
+
+    .score-icon {
+        width: 55px;
+        height: 55px;
+
+        font-size: 25px;
+    }
+
+    #score-number {
+        font-size: 38px;
+    }
+
+}
+/* =========================================================
+   MOBILE RESPONSIVE DESIGN
+   SysDesign AI
+   ========================================================= */
+
+/* Tablets and smaller laptops */
+@media (max-width: 900px) {
+
+    .hero {
+        padding: 50px 25px;
+    }
+
+    .hero-content {
+        width: 100%;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .requirements-dashboard,
+    .critique-dashboard,
+    .detail-header,
+    .diagram-card,
+    .detail-card {
+        width: 100%;
+        max-width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE PHONES
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    body {
+        overflow-x: hidden;
+    }
+
+
+    /* Navigation */
+
+    .navbar {
+        padding: 16px 18px;
+    }
+
+    .logo {
+        font-size: 16px;
+    }
+
+
+    /* Main pages */
+
+    .hero {
+        padding: 35px 16px;
+    }
+
+    .hero-content {
+        width: 100%;
+    }
+
+
+    /* Dashboard */
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .dashboard-card {
+        padding: 20px;
+    }
+
+    .dashboard-card h2 {
+        font-size: 18px;
+    }
+
+    .dashboard-card p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+
+    /* Detail pages */
+
+    .detail-page {
+        padding: 30px 15px;
+    }
+
+    .detail-header {
+        margin-bottom: 20px;
+    }
+
+    .detail-header h1 {
+        font-size: 28px;
+    }
+
+    .detail-header p {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+
+    /* Back button */
+
+    .back-button {
+        display: inline-block;
+        margin-bottom: 20px;
+        font-size: 13px;
+        padding: 9px 13px;
+    }
+
+
+    /* Requirement sections */
+
+    .requirement-section {
+        padding: 20px 16px;
+        border-radius: 15px;
+    }
+
+    .requirement-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .requirement-card {
+        padding: 18px;
+    }
+
+
+    /* Critique */
+
+    .critique-score-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 22px;
+    }
+
+    .severity-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .issue-list {
+        grid-template-columns: 1fr;
+    }
+
+    .critique-section {
+        padding: 20px 16px;
+    }
+
+
+    /* Architecture / Database */
+
+    .diagram-card,
+    .detail-card {
+        padding: 18px 14px;
+        overflow-x: auto;
+    }
+
+    .diagram-card h2,
+    .detail-card h2 {
+        font-size: 18px;
+    }
+
+
+    /* Mermaid diagrams */
+
+    .mermaid {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+
+    /* Tables / wide content */
+
+    pre {
+        max-width: 100%;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+
+    /* Footer */
+
+    footer {
+        padding: 20px 15px;
+        text-align: center;
+        font-size: 12px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .logo {
+        font-size: 14px;
+    }
+
+    .hero {
+        padding: 25px 12px;
+    }
+
+    .detail-page {
+        padding: 25px 12px;
+    }
+
+    .detail-header h1 {
+        font-size: 24px;
+    }
+
+    .dashboard-card {
+        padding: 17px;
+    }
+
+    .requirement-section {
+        padding: 17px 13px;
+    }
+
+}
+/* =====================================================
+   MERMAID DIAGRAM - RESPONSIVE HORIZONTAL SCROLL
+   ===================================================== */
+
+/*
+   Desktop / Laptop
+   ----------------
+   Keep the existing diagram appearance.
+   Only allow horizontal scrolling when required.
+*/
+
+.diagram-card {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.diagram-card .mermaid {
+    width: max-content;
+    min-width: 100%;
+    max-width: none;
+
+    overflow: visible;
+
+    display: block;
+    box-sizing: border-box;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/*
+   Mermaid SVG
+   -----------
+   Do NOT force the diagram to 750px.
+   Let Mermaid determine its natural width.
+*/
+
+.diagram-card .mermaid svg {
+    display: block;
+
+    max-width: none !important;
+    width: auto !important;
+    height: auto !important;
+
+    margin: 0 auto;
+}
+
+
+/* =====================================================
+   MOBILE DEVICES
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+    .diagram-card {
+        width: 100%;
+        max-width: 100%;
+
+        padding: 18px 12px;
+
+        /*
+           The card itself becomes the horizontal
+           scrolling area.
+        */
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+    .diagram-card .mermaid {
+        /*
+           Important:
+           The Mermaid diagram is allowed to be wider
+           than the phone screen.
+        */
+        width: max-content;
+        min-width: 700px;
+        max-width: none;
+
+        overflow: visible;
+
+        display: block;
+    }
+
+
+    .diagram-card .mermaid svg {
+        /*
+           Remove the old 750px restriction.
+        */
+        width: auto !important;
+        min-width: 700px !important;
+        max-width: none !important;
+
+        height: auto !important;
+
+        display: block;
+    }
+
+
+    /*
+       Visible horizontal scrollbar
+    */
+
+    .diagram-card::-webkit-scrollbar {
+        height: 10px;
+    }
+
+    .diagram-card::-webkit-scrollbar-track {
+        background: #e5e7eb;
+        border-radius: 10px;
+    }
+
+    .diagram-card::-webkit-scrollbar-thumb {
+        background: #9ca3af;
+        border-radius: 10px;
+    }
+
+    .diagram-card::-webkit-scrollbar-thumb:hover {
+        background: #6b7280;
+    }
+
+
+    /*
+       Firefox
+    */
+
+    .diagram-card {
+        scrollbar-width: auto;
+    }
+
+}
+
+
+/* =====================================================
+   VERY SMALL PHONES
+   ===================================================== */
+
+@media (max-width: 380px) {
+
+    .diagram-card {
+        padding: 15px 10px;
+    }
+
+    .diagram-card .mermaid {
+        min-width: 650px;
+    }
+
+    .diagram-card .mermaid svg {
+        min-width: 650px !important;
+    }
+
+}

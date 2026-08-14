@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>SysDesign AI</title>
+
+
+    <!-- Browser Tab Icon -->
+
+    <link rel="icon"
+          href="{{ url_for('static', filename='icons/favicon.png') }}">
+
+
+    <!-- Main Stylesheet -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+
+    <!-- PWA Manifest -->
+
+    <link rel="manifest"
+          href="{{ url_for('static', filename='manifest.json') }}">
+
+
+    <!-- Theme Color -->
+
+    <meta name="theme-color"
+          content="#111827">
+
+
+    <!-- Mobile / iOS App Icon -->
+
+    <link rel="apple-touch-icon"
+          href="{{ url_for('static', filename='icons/icon-192.png') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVIGATION BAR
+         ===================================================== -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            SysDesign AI
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main class="hero">
+
+        <div class="hero-content">
+
+
+            <!-- Tagline -->
+
+            <p class="tagline">
+                AI-POWERED SYSTEM DESIGN
+            </p>
+
+
+            <!-- Main Heading -->
+
+            <h1>
+                Transform Your Requirements
+                <br>
+                Into a System Design
+            </h1>
+
+
+            <!-- Description -->
+
+            <p class="description">
+                Describe your software idea in natural language
+                and let AI generate a complete system design.
+            </p>
+
+
+            <!-- =================================================
+                 INPUT CARD
+                 ================================================= -->
+
+            <div class="input-card">
+
+                <label for="requirement">
+                    Describe your software system
+                </label>
+
+
+                <textarea
+                    id="requirement"
+                    placeholder="Example: Design an online food delivery application where users can browse restaurants, order food, make payments and track deliveries..."
+                ></textarea>
+
+
+                <button
+                    id="generate-btn"
+                    type="button">
+
+                    Generate System Design
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer>
+
+        <p>
+            AI-Powered System Design Assistant
+        </p>
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+</body>
+
+</html>

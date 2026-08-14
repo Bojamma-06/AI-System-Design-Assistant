@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Requirement Analysis</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION BAR
+     ===================================================== -->
+
+<header class="navbar">
+
+    <div class="logo">
+        AI System Design Assistant
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+     ===================================================== -->
+
+<main class="detail-page">
+
+
+    <!-- =================================================
+         PAGE HEADER
+         ================================================= -->
+
+    <div class="detail-header">
+
+        <a href="/dashboard"
+           class="back-button">
+
+            ← Back to Dashboard
+
+        </a>
+
+
+        <p class="tagline">
+            REQUIREMENT ANALYSIS
+        </p>
+
+
+        <h1>
+            Software Requirements
+        </h1>
+
+
+        <p id="page-description">
+            A structured overview of what your software
+            system needs to do and the constraints it
+            must satisfy.
+        </p>
+
+    </div>
+
+
+    <!-- =================================================
+         FUNCTIONAL REQUIREMENTS
+         ================================================= -->
+
+    <section class="requirement-section">
+
+        <div class="section-heading">
+
+            <div class="section-icon">
+                ⚙️
+            </div>
+
+            <div>
+
+                <h2>
+                    Functional Requirements
+                </h2>
+
+                <p>
+                    What the system should do
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div id="functional-grid"
+             class="requirement-grid">
+
+            <!-- JavaScript inserts cards here -->
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         NON-FUNCTIONAL REQUIREMENTS
+         ================================================= -->
+
+    <section class="requirement-section">
+
+        <div class="section-heading">
+
+            <div class="section-icon">
+                ⚡
+            </div>
+
+            <div>
+
+                <h2>
+                    Non-Functional Requirements
+                </h2>
+
+                <p>
+                    How well the system should perform
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div id="non-functional-grid"
+             class="requirement-grid">
+
+            <!-- JavaScript inserts cards here -->
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         SYSTEM ACTORS
+         ================================================= -->
+
+    <section class="requirement-section">
+
+        <div class="section-heading">
+
+            <div class="section-icon">
+                👥
+            </div>
+
+            <div>
+
+                <h2>
+                    System Actors
+                </h2>
+
+                <p>
+                    People and external systems interacting
+                    with the application
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div id="actors-grid"
+             class="requirement-grid">
+
+            <!-- JavaScript inserts cards here -->
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         KEY CONSTRAINTS
+         ================================================= -->
+
+    <section class="requirement-section">
+
+        <div class="section-heading">
+
+            <div class="section-icon">
+                ⚠️
+            </div>
+
+            <div>
+
+                <h2>
+                    Key Constraints
+                </h2>
+
+                <p>
+                    Important limitations and conditions
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div id="constraints-grid"
+             class="requirement-grid">
+
+            <!-- JavaScript inserts cards here -->
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         FULL AI ANALYSIS
+         ================================================= -->
+
+    <section class="full-analysis-section">
+
+        <button
+            class="analysis-toggle"
+            onclick="toggleAnalysis()">
+
+            <span>
+                View Full AI Analysis
+            </span>
+
+            <span id="toggle-icon">
+                ↓
+            </span>
+
+        </button>
+
+
+        <div id="full-analysis"
+             class="full-analysis-content">
+
+            <pre id="analysis-text"></pre>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer>
+
+    <p>
+        AI-Powered System Design Assistant
+    </p>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        /*
+         * Get the complete system design
+         * generated for the CURRENT requirement.
+         */
+
+        const storedDesign =
+            sessionStorage.getItem(
+                "systemDesign"
+            );
+
+
+        const requirement =
+            sessionStorage.getItem(
+                "requirement"
+            );
+
+
+        /*
+         * If no design exists
+         */
+
+        if (!storedDesign) {
+
+            showEmptyMessage();
+
+            return;
+
+        }
+
+
+        let design;
+
+
+        try {
+
+            design =
+                JSON.parse(
+                    storedDesign
+                );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Unable to parse system design:",
+                error
+            );
+
+            showEmptyMessage();
+
+            return;
+
+        }
+
+
+        /*
+         * Update page description
+         */
+
+        const description =
+            document.getElementById(
+                "page-description"
+            );
+
+
+        if (requirement) {
+
+            description.textContent =
+                "AI-generated requirements for: " +
+                requirement;
+
+        }
+
+
+        /*
+         * Get requirement sections
+         */
+
+        const requirements =
+            design.requirements || {};
+
+
+        /*
+         * Render each section
+         */
+
+        renderCards(
+            "functional-grid",
+            requirements.functional,
+            "⚙️"
+        );
+
+
+        renderCards(
+            "non-functional-grid",
+            requirements.non_functional,
+            "⚡"
+        );
+
+
+        renderCards(
+            "actors-grid",
+            requirements.actors,
+            "👤"
+        );
+
+
+        renderCards(
+            "constraints-grid",
+            requirements.constraints,
+            "⚠️"
+        );
+
+
+        /*
+         * Full AI analysis
+         */
+
+        const analysisText =
+            document.getElementById(
+                "analysis-text"
+            );
+
+
+        if (design.requirements_raw) {
+
+            analysisText.textContent =
+                design.requirements_raw;
+
+        }
+
+        else {
+
+            analysisText.textContent =
+                JSON.stringify(
+                    requirements,
+                    null,
+                    2
+                );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   RENDER CARDS
+   ===================================================== */
+
+function renderCards(
+    containerId,
+    items,
+    icon
+) {
+
+    const container =
+        document.getElementById(
+            containerId
+        );
+
+
+    if (
+        !items ||
+        !Array.isArray(items) ||
+        items.length === 0
+    ) {
+
+        container.innerHTML =
+            `
+            <div class="empty-card">
+                No information available.
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    items.forEach(
+        function (item, index) {
+
+            /*
+             * Actors use "name"
+             * Other sections use "title"
+             */
+
+            const title =
+                item.title ||
+                item.name ||
+                "Requirement";
+
+
+            const description =
+                item.description ||
+                "No description available.";
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "requirement-card";
+
+
+            card.innerHTML =
+                `
+                <div class="requirement-number">
+                    ${String(index + 1).padStart(2, "0")}
+                </div>
+
+                <div class="requirement-card-icon">
+                    ${icon}
+                </div>
+
+                <div class="requirement-card-content">
+
+                    <h3>
+                        ${escapeHtml(title)}
+                    </h3>
+
+                    <p>
+                        ${escapeHtml(description)}
+                    </p>
+
+                </div>
+                `;
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   HTML ESCAPE
+   ===================================================== */
+
+function escapeHtml(value) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+    div.textContent =
+        value;
+
+    return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   EMPTY STATE
+   ===================================================== */
+
+function showEmptyMessage() {
+
+    const containers = [
+
+        "functional-grid",
+        "non-functional-grid",
+        "actors-grid",
+        "constraints-grid"
+
+    ];
+
+
+    containers.forEach(
+        function (id) {
+
+            const container =
+                document.getElementById(
+                    id
+                );
+
+
+            container.innerHTML =
+                `
+                <div class="empty-card">
+                    No system design has been generated yet.
+                    Please return to the home page and
+                    generate a system design.
+                </div>
+                `;
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   FULL ANALYSIS TOGGLE
+   ===================================================== */
+
+function toggleAnalysis() {
+
+    const content =
+        document.getElementById(
+            "full-analysis"
+        );
+
+
+    const icon =
+        document.getElementById(
+            "toggle-icon"
+        );
+
+
+    if (
+        content.classList.contains(
+            "show"
+        )
+    ) {
+
+        content.classList.remove(
+            "show"
+        );
+
+        icon.textContent =
+            "↓";
+
+    }
+
+    else {
+
+        content.classList.add(
+            "show"
+        );
+
+        icon.textContent =
+            "↑";
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

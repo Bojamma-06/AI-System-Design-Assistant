@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Design Critic</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION BAR
+     ===================================================== -->
+
+<header class="navbar">
+
+    <div class="logo">
+        AI System Design Assistant
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+     ===================================================== -->
+
+<main class="detail-page">
+
+
+    <div class="detail-header">
+
+        <a href="/dashboard"
+           class="back-button">
+
+            ← Back to Dashboard
+
+        </a>
+
+
+        <p class="tagline">
+            AI DESIGN CRITIC
+        </p>
+
+
+        <h1>
+            AI Design Critic
+        </h1>
+
+
+        <p>
+            AI-powered evaluation of the generated
+            system architecture and database design.
+        </p>
+
+    </div>
+
+
+    <div class="critique-dashboard">
+
+
+        <!-- =================================================
+             OVERALL SCORE
+             ================================================= -->
+
+        <section class="critique-score-card">
+
+            <div class="score-icon">
+                ⭐
+            </div>
+
+
+            <div class="score-content">
+
+                <p class="score-label">
+                    OVERALL DESIGN RATING
+                </p>
+
+
+                <div class="score-value">
+
+                    <span id="score-number">
+                        --
+                    </span>
+
+                    <span class="score-out-of">
+                        / 10
+                    </span>
+
+                </div>
+
+
+                <p id="score-summary">
+                    AI evaluation of the overall system design.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             RISK OVERVIEW
+             ================================================= -->
+
+        <section class="critique-section">
+
+
+            <div class="critique-section-header">
+
+                <div class="critique-section-icon">
+                    ⚠️
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Risk Overview
+                    </h2>
+
+                    <p>
+                        Potential issues identified by the
+                        AI design review.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="severity-grid">
+
+
+                <!-- SCALABILITY -->
+
+                <div class="severity-card severity-high">
+
+                    <div class="severity-icon">
+                        🔴
+                    </div>
+
+                    <div>
+
+                        <span class="severity-label">
+                            SCALABILITY
+                        </span>
+
+                        <strong id="scalability-count">
+                            0
+                        </strong>
+
+                        <p>
+                            issues identified
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PERFORMANCE -->
+
+                <div class="severity-card severity-medium">
+
+                    <div class="severity-icon">
+                        🟡
+                    </div>
+
+                    <div>
+
+                        <span class="severity-label">
+                            PERFORMANCE
+                        </span>
+
+                        <strong id="performance-count">
+                            0
+                        </strong>
+
+                        <p>
+                            issues identified
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SECURITY -->
+
+                <div class="severity-card severity-high">
+
+                    <div class="severity-icon">
+                        🔴
+                    </div>
+
+                    <div>
+
+                        <span class="severity-label">
+                            SECURITY
+                        </span>
+
+                        <strong id="security-count">
+                            0
+                        </strong>
+
+                        <p>
+                            issues identified
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- RELIABILITY -->
+
+                <div class="severity-card severity-medium">
+
+                    <div class="severity-icon">
+                        🟡
+                    </div>
+
+                    <div>
+
+                        <span class="severity-label">
+                            RELIABILITY
+                        </span>
+
+                        <strong id="reliability-count">
+                            0
+                        </strong>
+
+                        <p>
+                            issues identified
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DATABASE -->
+
+                <div class="severity-card severity-medium">
+
+                    <div class="severity-icon">
+                        🟡
+                    </div>
+
+                    <div>
+
+                        <span class="severity-label">
+                            DATABASE
+                        </span>
+
+                        <strong id="database-count">
+                            0
+                        </strong>
+
+                        <p>
+                            issues identified
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ARCHITECTURE -->
+
+                <div class="severity-card severity-low">
+
+                    <div class="severity-icon">
+                        🟢
+                    </div>
+
+                    <div>
+
+                        <span class="severity-label">
+                            ARCHITECTURE
+                        </span>
+
+                        <strong id="architecture-count">
+                            0
+                        </strong>
+
+                        <p>
+                            issues identified
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             IDENTIFIED ISSUES
+             ================================================= -->
+
+        <section class="critique-section">
+
+
+            <div class="critique-section-header">
+
+                <div class="critique-section-icon">
+                    🔎
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Identified Issues
+                    </h2>
+
+                    <p>
+                        Problems detected in the generated
+                        system design.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div id="issue-list"
+                 class="issue-list">
+
+                <div class="empty-issue">
+                    Analyzing design...
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             RECOMMENDATIONS
+             ================================================= -->
+
+        <section class="critique-section">
+
+
+            <div class="critique-section-header">
+
+                <div class="critique-section-icon">
+                    💡
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Key Recommendations
+                    </h2>
+
+                    <p>
+                        Practical improvements suggested
+                        by the AI.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div id="recommendations-list"
+                 class="recommendations-list">
+
+                <div class="recommendation-card">
+
+                    <span class="recommendation-label">
+                        01
+                    </span>
+
+                    <h3>
+                        Analyzing design...
+                    </h3>
+
+                    <p>
+                        Recommendations will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             RAW AI CRITIQUE
+             ================================================= -->
+
+        <details class="raw-critique">
+
+            <summary>
+                View Full AI Critique
+            </summary>
+
+
+            <pre id="raw-critique-content">
+            </pre>
+
+        </details>
+
+
+    </div>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer>
+
+    <p>
+        AI-Powered System Design Assistant
+    </p>
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        /*
+         * Retrieve the complete generated design.
+         */
+
+        const storedDesign =
+            sessionStorage.getItem(
+                "systemDesign"
+            );
+
+
+        /*
+         * Retrieve the critique.
+         */
+
+        const storedCritique =
+            sessionStorage.getItem(
+                "critique"
+            );
+
+
+        let critique = null;
+
+
+        /*
+         * First try the complete system design.
+         */
+
+        if (storedDesign) {
+
+            try {
+
+                const design =
+                    JSON.parse(
+                        storedDesign
+                    );
+
+                critique =
+                    design.critique || null;
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Unable to parse system design:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /*
+         * Fallback to the separate critique object.
+         */
+
+        if (!critique && storedCritique) {
+
+            try {
+
+                critique =
+                    JSON.parse(
+                        storedCritique
+                    );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Unable to parse critique:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /*
+         * If no critique exists.
+         */
+
+        if (!critique) {
+
+            document.getElementById(
+                "score-summary"
+            ).textContent =
+                "No AI critique is available. Please generate the system design again.";
+
+            document.getElementById(
+                "issue-list"
+            ).innerHTML =
+                '<div class="empty-issue">No critique data available.</div>';
+
+            document.getElementById(
+                "recommendations-list"
+            ).innerHTML =
+                '<div class="empty-issue">No recommendations available.</div>';
+
+            return;
+
+        }
+
+
+
+        /* =================================================
+           SCORE
+           ================================================= */
+
+
+        const score =
+            Number(
+                critique.score
+            );
+
+
+        document.getElementById(
+            "score-number"
+        ).textContent =
+            Number.isFinite(score)
+                ? score
+                : "--";
+
+
+        document.getElementById(
+            "score-summary"
+        ).textContent =
+            critique.summary ||
+            "AI evaluation of the overall system design.";
+
+
+
+        /* =================================================
+           ISSUE CATEGORIES
+           ================================================= */
+
+
+        const categories = {
+
+            scalability:
+                "Scalability",
+
+            performance:
+                "Performance",
+
+            security:
+                "Security",
+
+            reliability:
+                "Reliability",
+
+            database:
+                "Database",
+
+            architecture:
+                "Architecture"
+
+        };
+
+
+
+        /*
+         * Update issue counts.
+         */
+
+        Object.keys(categories).forEach(
+            function (category) {
+
+                const issues =
+                    Array.isArray(
+                        critique[category]
+                    )
+                        ? critique[category]
+                        : [];
+
+
+                const countElement =
+                    document.getElementById(
+                        category + "-count"
+                    );
+
+
+                if (countElement) {
+
+                    countElement.textContent =
+                        issues.length;
+
+                }
+
+            }
+        );
+
+
+
+        /* =================================================
+           IDENTIFIED ISSUES
+           ================================================= */
+
+
+        const issueList =
+            document.getElementById(
+                "issue-list"
+            );
+
+
+        issueList.innerHTML = "";
+
+
+        let issueNumber = 0;
+
+
+        Object.keys(categories).forEach(
+            function (category) {
+
+                const issues =
+                    Array.isArray(
+                        critique[category]
+                    )
+                        ? critique[category]
+                        : [];
+
+
+                issues.forEach(
+                    function (issue) {
+
+                        issueNumber++;
+
+
+                        const card =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        card.className =
+                            "issue-card";
+
+
+                        card.innerHTML = `
+
+                            <div class="issue-card-top">
+
+                                <span class="issue-severity ${getSeverityClass(category)}">
+
+                                    ${categories[category].toUpperCase()}
+
+                                </span>
+
+                            </div>
+
+
+                            <p>
+                                ${escapeHtml(issue)}
+                            </p>
+
+                        `;
+
+
+                        issueList.appendChild(
+                            card
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        if (issueNumber === 0) {
+
+            issueList.innerHTML = `
+
+                <div class="empty-issue">
+
+                    🟢 No major issues were identified
+                    by the AI design critic.
+
+                </div>
+
+            `;
+
+        }
+
+
+
+        /* =================================================
+           RECOMMENDATIONS
+           ================================================= */
+
+
+        const recommendationsList =
+            document.getElementById(
+                "recommendations-list"
+            );
+
+
+        recommendationsList.innerHTML =
+            "";
+
+
+        const recommendations =
+            Array.isArray(
+                critique.recommendations
+            )
+                ? critique.recommendations
+                : [];
+
+
+        if (recommendations.length === 0) {
+
+            recommendationsList.innerHTML = `
+
+                <div class="empty-issue">
+
+                    No additional recommendations
+                    were provided.
+
+                </div>
+
+            `;
+
+        }
+
+
+        recommendations.forEach(
+            function (item, index) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "recommendation-card";
+
+
+                let issue =
+                    "";
+
+                let recommendation =
+                    "";
+
+
+                /*
+                 * New structured format:
+                 *
+                 * {
+                 *   issue: "...",
+                 *   recommendation: "..."
+                 * }
+                 */
+
+
+                if (
+                    typeof item ===
+                    "object"
+                ) {
+
+                    issue =
+                        item.issue ||
+                        "Design improvement";
+
+
+                    recommendation =
+                        item.recommendation ||
+                        "";
+
+                }
+
+                else {
+
+                    /*
+                     * Fallback if Gemini returns
+                     * a simple string.
+                     */
+
+                    issue =
+                        "Recommended improvement";
+
+                    recommendation =
+                        String(item);
+
+                }
+
+
+                card.innerHTML = `
+
+                    <span class="recommendation-label">
+
+                        ${String(index + 1).padStart(2, "0")}
+
+                    </span>
+
+
+                    <h3>
+                        ${escapeHtml(issue)}
+                    </h3>
+
+
+                    <p>
+                        ${escapeHtml(recommendation)}
+                    </p>
+
+                `;
+
+
+                recommendationsList.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+
+        /* =================================================
+           RAW CRITIQUE
+           ================================================= */
+
+
+        document.getElementById(
+            "raw-critique-content"
+        ).textContent =
+            JSON.stringify(
+                critique,
+                null,
+                2
+            );
+
+    }
+);
+
+
+
+/* =====================================================
+   HELPER FUNCTIONS
+   ===================================================== */
+
+
+function getSeverityClass(category) {
+
+    /*
+     * This is only the visual category indicator.
+     * The actual issue count comes from Gemini.
+     */
+
+    if (
+        category === "security" ||
+        category === "scalability"
+    ) {
+
+        return "high";
+
+    }
+
+
+    if (
+        category === "performance" ||
+        category === "reliability" ||
+        category === "database"
+    ) {
+
+        return "medium";
+
+    }
+
+
+    return "low";
+
+}
+
+
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+</script>
+
+
+</body>
+
+</html>

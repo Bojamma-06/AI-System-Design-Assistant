@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>System Design Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION BAR
+     ===================================================== -->
+
+<header class="navbar">
+
+    <div class="logo">
+        AI System Design Assistant
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+     ===================================================== -->
+
+<main class="hero">
+
+    <div class="hero-content">
+
+        <!-- Tagline -->
+
+        <p class="tagline">
+            SYSTEM DESIGN DASHBOARD
+        </p>
+
+
+        <!-- Heading -->
+
+        <h1>
+            Your System Design
+        </h1>
+
+
+        <!-- Description -->
+
+        <p class="description">
+            Select a section below to explore the
+            AI-generated system design.
+        </p>
+
+
+        <!-- =================================================
+             DASHBOARD CARDS
+             ================================================= -->
+
+        <div class="dashboard-grid">
+
+
+            <!-- =============================================
+                 REQUIREMENT ANALYSIS
+                 ============================================= -->
+
+            <div class="dashboard-card"
+                 onclick="window.location.href='/requirements'">
+
+                <div class="card-icon">
+                    📋
+                </div>
+
+                <h2>
+                    Requirement Analysis
+                </h2>
+
+                <p>
+                    View functional requirements,
+                    non-functional requirements,
+                    system actors and key constraints.
+                </p>
+
+            </div>
+
+
+            <!-- =============================================
+                 SYSTEM ARCHITECTURE
+                 ============================================= -->
+
+            <div class="dashboard-card"
+                 onclick="window.location.href='/architecture'">
+
+                <div class="card-icon">
+                    🏗️
+                </div>
+
+                <h2>
+                    System Architecture
+                </h2>
+
+                <p>
+                    Explore architecture components,
+                    relationships, data flow and
+                    recommended technologies.
+                </p>
+
+            </div>
+
+
+            <!-- =============================================
+                 DATABASE DESIGN
+                 ============================================= -->
+
+            <div class="dashboard-card"
+                 onclick="window.location.href='/database'">
+
+                <div class="card-icon">
+                    🗄️
+                </div>
+
+                <h2>
+                    Database Design
+                </h2>
+
+                <p>
+                    Explore entities, tables,
+                    relationships, constraints
+                    and indexing recommendations.
+                </p>
+
+            </div>
+
+
+            <!-- =============================================
+                 AI DESIGN CRITIC
+                 ============================================= -->
+
+            <div class="dashboard-card"
+                 onclick="window.location.href='/critique'">
+
+                <div class="card-icon">
+                    ⚠️
+                </div>
+
+                <h2>
+                    AI Design Critic
+                </h2>
+
+                <p>
+                    Review scalability, performance,
+                    security, reliability and
+                    database concerns.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             BACK TO HOME
+             ================================================= -->
+
+        <div class="dashboard-footer">
+
+            <a href="/" class="back-button">
+                ← Back to Home
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer>
+
+    <p>
+        AI-Powered System Design Assistant
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>
