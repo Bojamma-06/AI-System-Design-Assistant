@@ -1,3 +1,7 @@
+ // =====================================================
+// GENERATE SYSTEM DESIGN
+// =====================================================
+
 const generateButton =
     document.getElementById("generate-btn");
 
@@ -13,6 +17,10 @@ if (generateButton && requirementInput) {
             requirementInput.value.trim();
 
 
+        // -------------------------------------------------
+        // VALIDATE REQUIREMENT
+        // -------------------------------------------------
+
         if (!requirement) {
 
             alert(
@@ -23,6 +31,10 @@ if (generateButton && requirementInput) {
         }
 
 
+        // -------------------------------------------------
+        // DISABLE BUTTON WHILE GENERATING
+        // -------------------------------------------------
+
         generateButton.disabled = true;
 
         generateButton.textContent =
@@ -30,6 +42,10 @@ if (generateButton && requirementInput) {
 
 
         try {
+
+            // -------------------------------------------------
+            // SEND REQUIREMENT TO FLASK
+            // -------------------------------------------------
 
             const response = await fetch(
                 "/generate",
@@ -48,9 +64,148 @@ if (generateButton && requirementInput) {
             );
 
 
-            const data =
-                await response.json();
+            // -------------------------------------------------
+            // CHECK RESPONSE TYPE
+            // -------------------------------------------------
 
+            const contentType =
+                response.headers.get(
+                    "content-type"
+                ) || "";
+
+
+            let data;
+
+
+            // -------------------------------------------------
+            // JSON RESPONSE
+            // -------------------------------------------------
+
+            if (
+                contentType
+                    .toLowerCase()
+                    .includes("application/json")
+            ) {
+
+                data =
+                    await response.json();
+
+            }
+
+
+            // -------------------------------------------------
+            // NON-JSON RESPONSE
+            // -------------------------------------------------
+
+            else {
+
+                const serverResponse =
+                    await response.text();
+
+
+                console.error(
+                    "SERVER RETURNED NON-JSON RESPONSE:",
+                    serverResponse
+                );
+
+
+                if (response.status === 404) {
+
+                    throw new Error(
+                        "The /generate endpoint was not found on the server."
+                    );
+
+                }
+
+
+                if (response.status === 500) {
+
+                    throw new Error(
+                        "The server encountered an internal error while generating the system design."
+                    );
+
+                }
+
+
+                if (response.status === 502) {
+
+                    throw new Error(
+                        "The server temporarily failed to respond. Please try again."
+                    );
+
+                }
+
+
+                if (response.status === 503) {
+
+                    throw new Error(
+                        "The AI service is temporarily unavailable. Please try again in a moment."
+                    );
+
+                }
+
+
+                throw new Error(
+                    `Server returned an unexpected response (HTTP ${response.status}).`
+                );
+
+            }
+
+
+            // -------------------------------------------------
+            // CHECK HTTP RESPONSE
+            // -------------------------------------------------
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data &&
+                    data.error
+                        ? data.error
+                        : `Server error (HTTP ${response.status}).`
+                );
+
+            }
+
+
+            // -------------------------------------------------
+            // CHECK APPLICATION RESPONSE
+            // -------------------------------------------------
+
+            if (
+                !data ||
+                data.success !== true
+            ) {
+
+                throw new Error(
+                    data &&
+                    data.error
+                        ? data.error
+                        : "Unable to generate the system design."
+                );
+
+            }
+
+
+            // -------------------------------------------------
+            // VERIFY DESIGN OBJECT
+            // -------------------------------------------------
+
+            if (
+                !data.design ||
+                typeof data.design !== "object"
+            ) {
+
+                throw new Error(
+                    "The server returned an invalid system design."
+                );
+
+            }
+
+
+            // -------------------------------------------------
+            // LOG COMPLETE AI RESPONSE
+            // -------------------------------------------------
 
             console.log(
                 "AI RESPONSE:",
@@ -58,28 +213,21 @@ if (generateButton && requirementInput) {
             );
 
 
-            if (!response.ok || !data.success) {
-
-                throw new Error(
-                    data.error ||
-                    "Unable to generate system design."
-                );
-
-            }
-
-
-            /*
-             * Store the COMPLETE structured design.
-             *
-             * This allows the dashboard pages to use
-             * the design generated for the CURRENT requirement.
-             */
+            // =================================================
+            // STORE COMPLETE SYSTEM DESIGN
+            // =================================================
 
             sessionStorage.setItem(
                 "systemDesign",
-                JSON.stringify(data.design)
+                JSON.stringify(
+                    data.design
+                )
             );
 
+
+            // =================================================
+            // STORE CURRENT REQUIREMENT
+            // =================================================
 
             sessionStorage.setItem(
                 "requirement",
@@ -87,10 +235,12 @@ if (generateButton && requirementInput) {
             );
 
 
-            /*
-             * Keep individual sections as well.
-             * This provides backward compatibility.
-             */
+            // =================================================
+            // STORE INDIVIDUAL SECTIONS
+            // =================================================
+            // These are kept for backward compatibility
+            // with the existing dashboard pages.
+            // =================================================
 
             sessionStorage.setItem(
                 "requirements",
@@ -124,15 +274,28 @@ if (generateButton && requirementInput) {
             );
 
 
-            /*
-             * Move to dashboard.
-             */
+            // =================================================
+            // GENERATION SUCCESSFUL
+            // =================================================
+
+            console.log(
+                "System design generated successfully."
+            );
+
+
+            // -------------------------------------------------
+            // MOVE TO DASHBOARD
+            // -------------------------------------------------
 
             window.location.href =
                 "/dashboard";
 
         }
 
+
+        // =====================================================
+        // ERROR HANDLING
+        // =====================================================
 
         catch (error) {
 
@@ -144,9 +307,16 @@ if (generateButton && requirementInput) {
 
             alert(
                 "Unable to generate the system design.\n\n" +
-                error.message
+                (
+                    error.message ||
+                    "An unexpected error occurred."
+                )
             );
 
+
+            // -------------------------------------------------
+            // RE-ENABLE BUTTON
+            // -------------------------------------------------
 
             generateButton.disabled = false;
 
@@ -158,26 +328,41 @@ if (generateButton && requirementInput) {
     });
 
 }
+
+
 // =====================================================
 // SERVICE WORKER
 // =====================================================
 
 if ("serviceWorker" in navigator) {
 
-    window.addEventListener("load", () => {
+    window.addEventListener(
+        "load",
+        () => {
 
-        navigator.serviceWorker
-            .register("/static/service-worker.js")
-            .then(() => {
-                console.log("SysDesign AI service worker registered.");
-            })
-            .catch(error => {
-                console.error(
-                    "Service worker registration failed:",
-                    error
-                );
-            });
+            navigator.serviceWorker
+                .register(
+                    "/static/service-worker.js"
+                )
 
-    });
+                .then(() => {
+
+                    console.log(
+                        "SysDesign AI service worker registered."
+                    );
+
+                })
+
+                .catch(error => {
+
+                    console.error(
+                        "Service worker registration failed:",
+                        error
+                    );
+
+                });
+
+        }
+    );
 
 }
