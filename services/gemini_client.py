@@ -21,8 +21,8 @@ def get_memory_usage_mb():
     Get the current Python process memory usage in MB.
 
     Works on:
-        - Windows
-        - Linux / Render
+    - Windows
+    - Linux / Render
 
     No external package is required.
     """
@@ -41,7 +41,6 @@ def get_memory_usage_mb():
             class PROCESS_MEMORY_COUNTERS(
                 ctypes.Structure
             ):
-
                 _fields_ = [
                     ("cb", wintypes.DWORD),
                     ("PageFaultCount", wintypes.DWORD),
@@ -98,7 +97,6 @@ def get_memory_usage_mb():
             )
 
             if not success:
-
                 return None
 
             return (
@@ -199,6 +197,21 @@ print_memory_usage(
 
 
 # =========================================================
+# MODEL SETTINGS
+# =========================================================
+
+# Primary model + fallback model
+#
+# If the primary model is temporarily unavailable,
+# the application will automatically try the fallback.
+
+GEMINI_MODELS = [
+    "gemini-3.6-flash",
+    "gemini-3.5-flash-lite"
+]
+
+
+# =========================================================
 # RETRY SETTINGS
 # =========================================================
 
@@ -219,13 +232,20 @@ def generate_ai_response(prompt):
     """
     Send a prompt to Gemini and return the generated response.
 
-    Temporary Gemini 503 errors are retried automatically.
+    The function:
 
-    Maximum attempts:
-        1 initial request + 3 retries
-
-    Total retry delays:
-        3 + 6 + 12 seconds
+    1. Validates the prompt.
+    2. Tries the primary Gemini model.
+    3. Retries temporary errors such as:
+       - 503
+       - unavailable
+       - high demand
+       - 429
+       - resource exhausted
+       - rate limit
+    4. If the primary model continues to fail,
+       automatically switches to the fallback model.
+    5. Validates the returned response.
     """
 
     # -----------------------------------------------------
@@ -264,162 +284,237 @@ def generate_ai_response(prompt):
 
 
     # =====================================================
-    # GEMINI REQUEST WITH RETRY
+    # TRY EACH MODEL
     # =====================================================
 
-    for attempt in range(
-        MAX_RETRIES + 1
-    ):
+    last_error = None
 
-        try:
+    for model in GEMINI_MODELS:
 
-            print(
-                f"[GEMINI] Attempt "
-                f"{attempt + 1}/{MAX_RETRIES + 1}"
-            )
+        print(
+            "\n=============================================="
+        )
 
+        print(
+            f"[GEMINI] Trying model: {model}"
+        )
 
-            # -------------------------------------------------
-            # API REQUEST
-            # -------------------------------------------------
-
-            response = client.models.generate_content(
-                model="gemini-3.6-flash",
-                contents=prompt
-            )
+        print(
+            "=============================================="
+        )
 
 
-            # -------------------------------------------------
-            # MEMORY AFTER RESPONSE
-            # -------------------------------------------------
+        # =================================================
+        # RETRY CURRENT MODEL
+        # =================================================
 
-            print_memory_usage(
-                "After Gemini API response"
-            )
+        for attempt in range(
+            MAX_RETRIES + 1
+        ):
 
+            try:
 
-            # -------------------------------------------------
-            # VALIDATE RESPONSE
-            # -------------------------------------------------
-
-            if not response:
-
-                raise ValueError(
-                    "Gemini returned an empty response."
+                print(
+                    f"[GEMINI] Attempt "
+                    f"{attempt + 1}/"
+                    f"{MAX_RETRIES + 1}"
                 )
 
 
-            if not response.text:
+                # -------------------------------------------------
+                # API REQUEST
+                # -------------------------------------------------
 
-                raise ValueError(
-                    "Gemini returned an empty response."
+                response = client.models.generate_content(
+                    model=model,
+                    contents=prompt
                 )
 
 
-            # -------------------------------------------------
-            # RESPONSE INFORMATION
-            # -------------------------------------------------
+                # -------------------------------------------------
+                # MEMORY AFTER RESPONSE
+                # -------------------------------------------------
 
-            print(
-                "[MEMORY] Gemini response characters:",
-                len(response.text)
-            )
-
-
-            print_memory_usage(
-                "Before returning Gemini response"
-            )
+                print_memory_usage(
+                    "After Gemini API response"
+                )
 
 
-            print(
-                "=============================================="
-            )
+                # -------------------------------------------------
+                # VALIDATE RESPONSE
+                # -------------------------------------------------
 
-            print(
-                "GEMINI REQUEST COMPLETED"
-            )
+                if not response:
 
-            print(
-                "==============================================\n"
-            )
+                    raise ValueError(
+                        "Gemini returned an empty response."
+                    )
 
 
-            return response.text
+                if not response.text:
+
+                    raise ValueError(
+                        "Gemini returned an empty response."
+                    )
 
 
-        # =====================================================
-        # ERROR HANDLING
-        # =====================================================
+                # -------------------------------------------------
+                # RESPONSE INFORMATION
+                # -------------------------------------------------
 
-        except Exception as error:
-
-            error_message = str(
-                error
-            ).lower()
-
-
-            print(
-                "\n=============================================="
-            )
-
-            print(
-                "GEMINI API ERROR"
-            )
-
-            print(
-                "=============================================="
-            )
-
-            print(
-                str(error)
-            )
+                print(
+                    "[MEMORY] Gemini response characters:",
+                    len(response.text)
+                )
 
 
-            print_memory_usage(
-                "Memory after Gemini API error"
-            )
-
-
-            # -------------------------------------------------
-            # CHECK WHETHER ERROR IS TEMPORARY
-            # -------------------------------------------------
-
-            is_temporary_error = (
-                "503" in error_message
-                or
-                "unavailable" in error_message
-                or
-                "high demand" in error_message
-                or
-                "429" in error_message
-                or
-                "resource exhausted" in error_message
-                or
-                "rate limit" in error_message
-            )
-
-
-            # -------------------------------------------------
-            # RETRY TEMPORARY ERRORS
-            # -------------------------------------------------
-
-            if (
-                is_temporary_error
-                and attempt < MAX_RETRIES
-            ):
-
-                delay = RETRY_DELAYS[
-                    attempt
-                ]
+                print_memory_usage(
+                    "Before returning Gemini response"
+                )
 
 
                 print(
-                    f"[GEMINI] Temporary error detected."
+                    "\n=============================================="
                 )
 
                 print(
-                    f"[GEMINI] Retrying in "
-                    f"{delay} seconds..."
+                    "GEMINI REQUEST COMPLETED"
+                )
+
+                print(
+                    f"Successful model: {model}"
+                )
+
+                print(
+                    "==============================================\n"
+                )
+
+
+                # -------------------------------------------------
+                # RETURN SUCCESSFUL RESPONSE
+                # -------------------------------------------------
+
+                return response.text
+
+
+            # =====================================================
+            # ERROR HANDLING
+            # =====================================================
+
+            except Exception as error:
+
+                last_error = error
+
+                error_message = str(
+                    error
+                ).lower()
+
+
+                print(
+                    "\n=============================================="
+                )
+
+                print(
+                    "GEMINI API ERROR"
+                )
+
+                print(
+                    "=============================================="
+                )
+
+
+                print(
+                    str(error)
+                )
+
+
+                print_memory_usage(
+                    "Memory after Gemini API error"
+                )
+
+
+                # -------------------------------------------------
+                # CHECK WHETHER ERROR IS TEMPORARY
+                # -------------------------------------------------
+
+                is_temporary_error = (
+
+                    "503" in error_message
+
+                    or
+
+                    "unavailable" in error_message
+
+                    or
+
+                    "high demand" in error_message
+
+                    or
+
+                    "429" in error_message
+
+                    or
+
+                    "resource exhausted" in error_message
+
+                    or
+
+                    "rate limit" in error_message
+
+                )
+
+
+                # -------------------------------------------------
+                # RETRY TEMPORARY ERRORS
+                # -------------------------------------------------
+
+                if (
+                    is_temporary_error
+                    and
+                    attempt < MAX_RETRIES
+                ):
+
+                    delay = RETRY_DELAYS[
+                        attempt
+                    ]
+
+
+                    print(
+                        "[GEMINI] Temporary error detected."
+                    )
+
+
+                    print(
+                        f"[GEMINI] Retrying in "
+                        f"{delay} seconds..."
+                    )
+
+
+                    print(
+                        "==============================================\n"
+                    )
+
+
+                    time.sleep(
+                        delay
+                    )
+
+
+                    continue
+
+
+                # -------------------------------------------------
+                # CURRENT MODEL FAILED
+                # -------------------------------------------------
+
+                print(
+                    f"[GEMINI] Model {model} "
+                    "is unavailable."
+                )
+
+
+                print(
+                    "[GEMINI] Moving to next model..."
                 )
 
 
@@ -428,26 +523,27 @@ def generate_ai_response(prompt):
                 )
 
 
-                time.sleep(
-                    delay
-                )
+                break
 
 
-                continue
+    # =====================================================
+    # ALL MODELS FAILED
+    # =====================================================
+
+    print(
+        "\n=============================================="
+    )
+
+    print(
+        "ALL GEMINI MODELS FAILED"
+    )
+
+    print(
+        "=============================================="
+    )
 
 
-            # -------------------------------------------------
-            # PERMANENT / FINAL ERROR
-            # -------------------------------------------------
-
-            print(
-                "No more retries available."
-            )
-
-
-            print(
-                "==============================================\n"
-            )
-
-
-            raise
+    raise RuntimeError(
+        "All Gemini models are currently unavailable. "
+        "Please try again shortly."
+    ) from last_error

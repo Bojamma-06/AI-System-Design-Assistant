@@ -1,3 +1,4 @@
+
 from services.gemini_client import generate_ai_response
 
 import json
@@ -22,7 +23,9 @@ def extract_json(response):
     """
 
     if not response:
-        raise ValueError("Gemini returned an empty response.")
+        raise ValueError(
+            "Gemini returned an empty response."
+        )
 
     response = response.strip()
 
@@ -53,6 +56,7 @@ def extract_json(response):
     json_text = response[start:end + 1]
 
     try:
+
         return json.loads(json_text)
 
     except json.JSONDecodeError as error:
@@ -129,10 +133,16 @@ def normalize_requirements(requirements):
 
         normalized_functional.append({
             "title": str(
-                item.get("title", "Requirement")
+                item.get(
+                    "title",
+                    "Requirement"
+                )
             ),
             "description": str(
-                item.get("description", "")
+                item.get(
+                    "description",
+                    ""
+                )
             )
         })
 
@@ -149,10 +159,16 @@ def normalize_requirements(requirements):
 
         normalized_non_functional.append({
             "title": str(
-                item.get("title", "Requirement")
+                item.get(
+                    "title",
+                    "Requirement"
+                )
             ),
             "description": str(
-                item.get("description", "")
+                item.get(
+                    "description",
+                    ""
+                )
             )
         })
 
@@ -167,8 +183,6 @@ def normalize_requirements(requirements):
         if not isinstance(item, dict):
             continue
 
-        # Use title consistently because requirements.html
-        # expects item.title
         title = (
             item.get("title")
             or item.get("name")
@@ -178,7 +192,10 @@ def normalize_requirements(requirements):
         normalized_actors.append({
             "title": str(title),
             "description": str(
-                item.get("description", "")
+                item.get(
+                    "description",
+                    ""
+                )
             )
         })
 
@@ -195,10 +212,16 @@ def normalize_requirements(requirements):
 
         normalized_constraints.append({
             "title": str(
-                item.get("title", "Constraint")
+                item.get(
+                    "title",
+                    "Constraint"
+                )
             ),
             "description": str(
-                item.get("description", "")
+                item.get(
+                    "description",
+                    ""
+                )
             )
         })
 
@@ -241,11 +264,17 @@ def normalize_architecture(architecture):
             continue
 
         component_id = str(
-            item.get("id", "")
+            item.get(
+                "id",
+                ""
+            )
         ).strip()
 
         component_name = str(
-            item.get("name", "")
+            item.get(
+                "name",
+                ""
+            )
         ).strip()
 
         if not component_id:
@@ -258,7 +287,10 @@ def normalize_architecture(architecture):
             "id": component_id,
             "name": component_name,
             "description": str(
-                item.get("description", "")
+                item.get(
+                    "description",
+                    ""
+                )
             )
         })
 
@@ -275,11 +307,17 @@ def normalize_architecture(architecture):
             continue
 
         source = str(
-            item.get("from", "")
+            item.get(
+                "from",
+                ""
+            )
         ).strip()
 
         target = str(
-            item.get("to", "")
+            item.get(
+                "to",
+                ""
+            )
         ).strip()
 
         if (
@@ -292,7 +330,10 @@ def normalize_architecture(architecture):
             "from": source,
             "to": target,
             "label": str(
-                item.get("label", "")
+                item.get(
+                    "label",
+                    ""
+                )
             )
         })
 
@@ -305,10 +346,16 @@ def normalize_architecture(architecture):
 
         normalized_technologies.append({
             "category": str(
-                item.get("category", "")
+                item.get(
+                    "category",
+                    ""
+                )
             ),
             "technology": str(
-                item.get("technology", "")
+                item.get(
+                    "technology",
+                    ""
+                )
             )
         })
 
@@ -354,7 +401,10 @@ def normalize_database(database):
             continue
 
         name = str(
-            entity.get("name", "")
+            entity.get(
+                "name",
+                ""
+            )
         ).strip()
 
         if not name:
@@ -372,7 +422,10 @@ def normalize_database(database):
                 continue
 
             column_name = str(
-                column.get("name", "")
+                column.get(
+                    "name",
+                    ""
+                )
             ).strip()
 
             if not column_name:
@@ -387,7 +440,10 @@ def normalize_database(database):
                     )
                 ),
                 "key": str(
-                    column.get("key", "")
+                    column.get(
+                        "key",
+                        ""
+                    )
                 )
             })
 
@@ -406,11 +462,17 @@ def normalize_database(database):
             continue
 
         source = str(
-            relationship.get("from", "")
+            relationship.get(
+                "from",
+                ""
+            )
         ).strip()
 
         target = str(
-            relationship.get("to", "")
+            relationship.get(
+                "to",
+                ""
+            )
         ).strip()
 
         if (
@@ -431,6 +493,7 @@ def normalize_database(database):
             "ONE_TO_MANY",
             "MANY_TO_MANY"
         }:
+
             relationship_type = "ONE_TO_MANY"
 
         normalized_relationships.append({
@@ -462,15 +525,27 @@ def normalize_critique(critique):
 
     critique = ensure_dict(critique)
 
-    score = critique.get("score", 0)
+    score = critique.get(
+        "score",
+        0
+    )
 
     try:
+
         score = float(score)
+
     except (TypeError, ValueError):
+
         score = 0
 
     # Keep score between 1 and 10
-    score = max(1, min(10, score))
+    score = max(
+        1,
+        min(
+            10,
+            score
+        )
+    )
 
     categories = [
         "scalability",
@@ -492,7 +567,9 @@ def normalize_critique(critique):
         )
 
     recommendations = ensure_list(
-        critique.get("recommendations")
+        critique.get(
+            "recommendations"
+        )
     )
 
     normalized_recommendations = []
@@ -557,11 +634,18 @@ def generate_system_design(requirement):
     """
 
     if not requirement:
+
         raise ValueError(
             "Software requirement cannot be empty."
         )
 
     requirement = requirement.strip()
+
+    if not requirement:
+
+        raise ValueError(
+            "Software requirement cannot be empty."
+        )
 
     # =====================================================
     # GEMINI PROMPT
@@ -939,15 +1023,20 @@ JSON RULES
     # CALL GEMINI
     # =====================================================
 
-    response = generate_ai_response(prompt)
+    response = generate_ai_response(
+        prompt
+    )
 
     # =====================================================
     # PARSE JSON
     # =====================================================
 
-    design = extract_json(response)
+    design = extract_json(
+        response
+    )
 
     if not isinstance(design, dict):
+
         raise ValueError(
             "Gemini returned an invalid system design."
         )
@@ -956,48 +1045,40 @@ JSON RULES
     # NORMALIZE ALL SECTIONS
     # =====================================================
 
-    design["requirements"] = normalize_requirements(
-        design.get("requirements", {})
+    design["requirements"] = (
+        normalize_requirements(
+            design.get(
+                "requirements",
+                {}
+            )
+        )
     )
 
-    design["architecture"] = normalize_architecture(
-        design.get("architecture", {})
+    design["architecture"] = (
+        normalize_architecture(
+            design.get(
+                "architecture",
+                {}
+            )
+        )
     )
 
-    design["database"] = normalize_database(
-        design.get("database", {})
+    design["database"] = (
+        normalize_database(
+            design.get(
+                "database",
+                {}
+            )
+        )
     )
 
-    design["critique"] = normalize_critique(
-        design.get("critique", {})
-    )
-
-    # =====================================================
-    # RAW JSON OUTPUTS
-    # =====================================================
-
-    design["requirements_raw"] = json.dumps(
-        design["requirements"],
-        indent=2,
-        ensure_ascii=False
-    )
-
-    design["architecture_raw"] = json.dumps(
-        design["architecture"],
-        indent=2,
-        ensure_ascii=False
-    )
-
-    design["database_raw"] = json.dumps(
-        design["database"],
-        indent=2,
-        ensure_ascii=False
-    )
-
-    design["critique_raw"] = json.dumps(
-        design["critique"],
-        indent=2,
-        ensure_ascii=False
+    design["critique"] = (
+        normalize_critique(
+            design.get(
+                "critique",
+                {}
+            )
+        )
     )
 
     # =====================================================
@@ -1006,14 +1087,40 @@ JSON RULES
 
     print()
     print("==============================================")
-    print("SYSTEM DESIGN GENERATED")
+    print("SYSTEM DESIGN GENERATED SUCCESSFULLY")
     print("==============================================")
+
     print(
-        json.dumps(
-            design,
-            indent=2,
-            ensure_ascii=False
+        "Requirements:",
+        len(
+            design["requirements"]["functional"]
         )
     )
+
+    print(
+        "Architecture components:",
+        len(
+            design["architecture"]["components"]
+        )
+    )
+
+    print(
+        "Database entities:",
+        len(
+            design["database"]["entities"]
+        )
+    )
+
+    print(
+        "Critique score:",
+        design["critique"]["score"]
+    )
+
     print("==============================================")
+
+    # =====================================================
+    # RETURN COMPLETE DESIGN
+    # =====================================================
+
     return design
+
